@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>普吉岛端午之旅 💕</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #FF6B9D;
+            --secondary: #C44569;
+            --accent: #FFC937;
+            --ocean: #00B4D8;
+            --dark: #2d3436;
+            --light: #fff5f7;
+            --gradient: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+        
+        .hero {
+            background: var(--gradient);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+        
+        .hero .dates {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 25px;
+            border-radius: 30px;
+            display: inline-block;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 20px;
+            background: white;
+            margin: -30px 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(196, 69, 105, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 15px 10px;
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .tab-nav {
+            display: flex;
+            padding: 0 20px;
+            overflow-x: auto;
+            gap: 10px;
+            scrollbar-width: none;
+        }
+        
+        .tab-nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: white;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .tab-btn.active {
+            background: var(--gradient);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 25px 20px;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .day-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient);
+        }
+        
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .day-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        
+        .day-info h3 {
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .day-info .theme {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--ocean));
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px var(--primary);
+        }
+        
+        .time {
+            font-size: 0.85rem;
+            color: var(--ocean);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .activity {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .activity-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .kinn-spot {
+            background: linear-gradient(135deg, #fff5f7 0%, #ffeef2 100%);
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .kinn-spot-title {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .kinn-spot-content {
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .budget-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .budget-total {
+            text-align: right;
+        }
+        
+        .budget-total .label {
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        .budget-total .amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .budget-item:last-child {
+            border-bottom: none;
+        }
+        
+        .budget-item .icon {
+            margin-right: 10px;
+        }
+        
+        .budget-item .name {
+            flex: 1;
+        }
+        
+        .budget-item .cost {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        
+        #route-map {
+            height: 350px;
+            width: 100%;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tips-card {
+            background: linear-gradient(135deg, #E8F6FA 0%, #F0F8FF 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .tip-item {
+            display: flex;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,180,216,0.2);
+        }
+        
+        .tip-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tip-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .tip-content h4 {
+            font-size: 1rem;
+            color: var(--dark);
+            margin-bottom: 3px;
+        }
+        
+        .tip-content p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .hotel-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        
+        .hotel-card h4 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .hotel-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .hotel-card .price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .spots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .spot-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .spot-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .spot-img {
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        
+        .spot-info {
+            padding: 20px;
+        }
+        
+        .spot-info h4 {
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .spot-info p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .spot-tag {
+            display: inline-block;
+            background: var(--light);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+        }
+        
+        footer .heart {
+            color: var(--primary);
+            animation: heartbeat 1s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .nav-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 10px 10px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .nav-bottom button {
+            background: none;
+            border: none;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            color: #888;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            flex: 1;
+        }
+        
+        .nav-bottom button.active {
+            color: var(--primary);
+        }
+        
+        .nav-bottom button .icon {
+            font-size: 1.2rem;
+        }
+        
+        .content-wrap {
+            padding-bottom: 80px;
+        }
+        
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .legend-dot.day1 { background: #FF6B9D; }
+        .legend-dot.day2 { background: #FFC937; }
+        .legend-dot.day3 { background: #00B4D8; }
+        .legend-dot.hotel { background: #6c5ce7; }
+        
+        .collapsible {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .collapsible-header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .collapsible-header .arrow {
+            transition: transform 0.3s;
+        }
+        
+        .collapsible.open .arrow {
+            transform: rotate(180deg);
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .collapsible.open .collapsible-content {
+            max-height: 500px;
+        }
+        
+        .collapsible-inner {
+            padding: 0 20px 15px;
+            font-size: 0.95rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>🇹🇭 普吉岛端午之旅</h1>
+        <p class="subtitle">和她一起，遇见最美的安达曼海</p>
+        <span class="dates">📅 端午节假期 · 3天4晚</span>
+    </div>
+    
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value">¥9950</div>
+            <div class="stat-label">预算总额</div>
+        </div>
+        <div class="stat">
+            <div class="stat-icon">🏨</div>
+            <div class="stat-value">¥3850</div>
+            <div class="stat-label">酒店(4晚)</div>
+        </div>
+        <div class="stat">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-value">100%</div>
+            <div class="stat-label">甜蜜指数</div>
+        </div>
+    </div>
+    
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="itinerary">📅 行程安排</button>
+        <button class="tab-btn" data-tab="flights">✈️ 机票酒店</button>
+        <button class="tab-btn" data-tab="map">🗺️ 互动地图</button>
+        <button class="tab-btn" data-tab="kinn">💕 追星打卡</button>
+        <button class="tab-btn" data-tab="budget">💰 预算清单</button>
+        <button class="tab-btn" data-tab="tips">📝 实用贴士</button>
+    </div>
+    
+    <div class="content-wrap">
+        <div id="itinerary" class="tab-content active">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">D1</div>
+                    <div class="day-info">
+                        <h3>抵达日 · 放松适应</h3>
+                        <span class="theme">🌴 抵达 + 酒店休息 + 芭东夜市</span>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">14:00 - 15:30</div>
+                        <div class="activity">✈️ 抵达普吉岛</div>
+                        <div class="activity-desc">专车接机，直奔酒店。路上看看窗外的热带风光，慢慢进入度假模式～</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">15:30 - 18:00</div>
+                        <div class="activity">🏨 入住 & 休息</div>
+                        <div class="activity-desc">办理入住，在酒店稍作休息，泡泡泳池，适应一下热带气候</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">18:30 - 21:00</div>
+                        <div class="activity">🌙 芭东海滩 & 夜市</div>
+                        <div class="activity-desc">漫步芭东海滩，看日落！之后去夜市逛吃：泰式烤鱼、芒果糯米饭、椰子冰淇淋...</div>
+                    </div>
+                </div>
+                <div class="kinn-spot">
+                    <div class="kinn-spot-title">💕 KinnPorsche打卡</div>
+                    <div class="kinn-spot-content">
+                        <strong>芭东海滩</strong> - 第一季第3集场景之一，傍晚的海滩日落超级美，可以拍同款浪漫照片！
+                    </div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">D2</div>
+                    <div class="day-info">
+                        <h3>浪漫日 · 海滩时光</h3>
+                        <span class="theme">💑 卡伦海滩 + 下午茶 + SPA</span>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">09:00 - 12:00</div>
+                        <div class="activity">🏖️ 卡伦海滩</div>
+                        <div class="activity-desc">普吉岛最长的海滩，沙质细腻柔软。人相对芭东少很多，可以安静享受二人世界</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:30 - 14:00</div>
+                        <div class="activity">☕ 悬崖餐厅午餐</div>
+                        <div class="activity-desc">在卡伦海滩附近的悬崖餐厅用餐，俯瞰整片安达曼海，拍照超级出片！</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">14:30 - 17:00</div>
+                        <div class="activity">💆 泰式SPA</div>
+                        <div class="activity-desc">选一家口碑好的泰式按摩店，做个精油SPA放松身心（推荐： Let's Relax Spa）</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">18:00 - 20:00</div>
+                        <div class="activity">🌅 卡塔海滩日落</div>
+                        <div class="activity-desc">去卡塔海滩看绝美日落，然后回酒店附近吃晚餐</div>
+                    </div>
+                </div>
+                <div class="kinn-spot">
+                    <div class="kinn-spot-title">💕 KinnPorsche打卡</div>
+                    <div class="kinn-spot-content">
+                        <strong>卡伦观景台</strong> - 这里可以看到卡伦、卡塔、芭东三大海滩的全景，也是剧粉必打卡的地方之一
+                    </div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">D3</div>
+                    <div class="day-info">
+                        <h3>追星日 · 取景地巡礼</h3>
+                        <span class="theme">🎬 KinnPorsche取景地深度游</span>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">10:00 - 12:00</div>
+                        <div class="activity">📍 普吉镇老街</div>
+                        <div class="activity-desc">色彩斑斓的中葡建筑街道，漫步其中超有氛围感。剧中很多场景都在这里取景！</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:30 - 14:00</div>
+                        <div class="activity">☕ Rangsit Coffee</div>
+                        <div class="activity-desc">追星人必去的咖啡店！据说剧组常在这里取景，品尝泰式咖啡，假装在拍戏～</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">15:00 - 17:30</div>
+                        <div class="activity">🛍️ 江西冷购物中心</div>
+                        <div class="activity-desc">吹着空调逛街，帮你女朋友买买防晒和纪念品。BigC超市可以采购泰国零食</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">19:00 - 21:00</div>
+                        <div class="activity">🌃 芭东酒吧街夜景</div>
+                        <div class="activity-desc">感受普吉岛的夜生活，但不进去酒吧哦～在外面拍拍照，感受热闹氛围</div>
+                    </div>
+                </div>
+                <div class="kinn-spot">
+                    <div class="kinn-spot-title">💕 KinnPorsche取景地重点标记</div>
+                    <div class="kinn-spot-content">
+                        <strong>普吉镇</strong> - 必去！老街的中葡建筑、五颜六色的房子，每一处都是拍照圣地<br>
+                        <strong>周日步行街</strong> - 如果碰上周日，晚上有步行街夜市，超热闹！<br>
+                        <strong>普吉蓝峡谷餐厅</strong> - 剧中出现过的餐厅，可以去打卡！
+                    </div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">D4</div>
+                    <div class="day-info">
+                        <h3>悠闲日 · 自由活动</h3>
+                        <span class="theme">🛶 享受慢生活 + 准备返程</span>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">09:00 - 11:00</div>
+                        <div class="activity">🏊 酒店享受</div>
+                        <div class="activity-desc">睡到自然醒，在酒店泳池畔悠闲度过一上午，喝杯冰饮，看本好书</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:00 - 14:00</div>
+                        <div class="activity">🍜 最后的泰餐</div>
+                        <div class="activity-desc">去品尝一餐正宗的泰南菜：冬阴功汤、绿咖喱、泰式炒河粉...给味蕾留下美好记忆</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">14:30 - 16:00</div>
+                        <div class="activity">🛍️ 伴手礼采购</div>
+                        <div class="activity-desc">Kingpower免税店逛逛，给家人朋友带点特产：泰国香米、榴莲干、青草膏...</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">18:00</div>
+                        <div class="activity">✈️ 返程</div>
+                        <div class="activity-desc">专车送机，带着满满的美好回忆回家～下次见，普吉岛！</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="flights" class="tab-content">
+            <h2 class="section-title">✈️ 机票 & 酒店</h2>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">✈️</div>
+                    <div class="day-info">
+                        <h3>机票信息</h3>
+                        <span class="theme">✈️ 已确认行程</span>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">去程</div>
+                        <div class="activity">上海 → 普吉岛</div>
+                        <div class="activity-desc">航班号：<strong>MU8617（实际乘坐：FM831）</strong><br>日期：<strong>2026年6月18日（周四）</strong><br>时间：<strong>18:10（上海浦东T1） → 22:45（普吉国际I）</strong><br>飞行时间：<strong>5小时35分</strong><br>行李额：<strong>手提1件8KG，托运1件23KG</strong></div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">返程</div>
+                        <div class="activity">普吉岛 → 上海</div>
+                        <div class="activity-desc">航班号：<strong>9C8522</strong><br>日期：<strong>2026年6月22日（周一）</strong><br>时间：<strong>23:35（普吉国际I） → 06:00+1（上海浦东T2）</strong><br>飞行时间：<strong>5小时25分</strong><br>行李额：<strong>手提1件7KG，托运1件20KG</strong></div>
+                    </div>
+                </div>
+                <div class="kinn-spot" style="margin-top: 20px;">
+                    <div class="kinn-spot-title">💡 机票小贴士</div>
+                    <div class="kinn-spot-content">
+                        • 建议提前3小时到达机场办理登机<br>
+                        • 国际航班行李额一般为20-23kg/人<br>
+                        • 带上颈枕和眼罩，长途飞行更舒适<br>
+                        • 落地后记得填写入境卡（现在大多可电子填写）
+                    </div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">🏨</div>
+                    <div class="day-info">
+                        <h3>酒店信息</h3>
+                        <span class="theme">🏨 推荐酒店 & 入住安排</span>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">入住时间</div>
+                        <div class="activity">酒店入住</div>
+                        <div class="activity-desc">入住日期：<strong>2026年6月18日（周四）</strong><br>退房日期：<strong>2026年6月22日（周一）</strong><br>入住天数：<strong>4晚</strong><br>入住人数：<strong>2人</strong></div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">推荐酒店</div>
+                        <div class="activity">芭东/卡图区域</div>
+                        <div class="activity-desc">
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color: var(--primary);">🏨 普吉岛芭东巴尔米拉度假酒店 (Palm米拉 Patong)</strong><br>
+                                <strong>价格：</strong>¥950-1100/晚<br>
+                                <strong>位置：</strong>芭东海滩核心区，步行5分钟到海滩<br>
+                                <strong>优势：</strong>位置绝佳，步行可到夜市和购物中心，有泳池和SPA，性价比高<br>
+                                <strong>劣势：</strong>可能会有噪音，房间相对较小<br>
+                                <strong>交通：</strong>门口有突突车和出租车，到江西冷购物中心步行10分钟<br>
+                                <strong>周边：</strong>芭东夜市、江西冷购物中心、班赞海鲜市场、各种餐厅和酒吧
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color: var(--primary);">🏨 普吉岛希尔顿阿卡迪亚度假村 (Hilton Phuket Arcadia Resort & Spa)</strong><br>
+                                <strong>价格：</strong>¥1200-1500/晚<br>
+                                <strong>位置：</strong>芭东海滩北部，私人海滩区域<br>
+                                <strong>优势：</strong>豪华度假体验，私人海滩，设施齐全（多个泳池、SPA、健身房），服务一流<br>
+                                <strong>劣势：</strong>价格较高，到热闹区域需要打车<br>
+                                <strong>交通：</strong>酒店有班车到芭东中心，打车到江西冷约10分钟<br>
+                                <strong>周边：</strong>相对安静，周边有一些餐厅，到芭东中心约2公里
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color: var(--primary);">🏨 普吉岛卡塔海滩度假村 (Kata Beach Resort & Spa)</strong><br>
+                                <strong>价格：</strong>¥1000-1200/晚<br>
+                                <strong>位置：</strong>卡塔海滩南端，步行3分钟到海滩<br>
+                                <strong>优势：</strong>安静舒适，海滩质量好，有泳池和SPA，适合情侣<br>
+                                <strong>劣势：</strong>到芭东需要20分钟车程，周边商业不如芭东热闹<br>
+                                <strong>交通：</strong>门口有出租车，到卡伦海滩约10分钟，到芭东约20分钟<br>
+                                <strong>周边：</strong>卡塔海滩、卡塔夜市、几家餐厅和便利店
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <strong style="color: var(--primary);">🏨 普吉岛万豪温泉度假酒店 (Phuket Marriott Resort & Spa, Merlin Beach)</strong><br>
+                                <strong>价格：</strong>¥1300-1600/晚<br>
+                                <strong>位置：</strong>卡图区域，私人海滩，靠近卡伦海滩<br>
+                                <strong>优势：</strong>高品质度假体验，私人海滩，豪华设施，服务专业，适合情侣度假<br>
+                                <strong>劣势：</strong>价格较高，位置相对偏远<br>
+                                <strong>交通：</strong>酒店有班车服务，打车到卡伦海滩约15分钟，到芭东约25分钟<br>
+                                <strong>周边：</strong>相对私密，周边有一些餐厅，主要依赖酒店设施
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="kinn-spot" style="margin-top: 20px;">
+                    <div class="kinn-spot-title">💡 酒店小贴士</div>
+                    <div class="kinn-spot-content">
+                        • 建议提前1-2个月预订，价格更优惠<br>
+                        • 选择含早餐的套餐，节省早餐费用<br>
+                        • 入住时可要求高楼层或海景房（视房态而定）<br>
+                        • 退房前记得检查行李，不要遗留物品
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="map" class="tab-content">
+            <h2 class="section-title">🗺️ 行程互动地图</h2>
+            <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">点击标记查看详细位置和介绍</p>
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+            <div class="legend">
+                <div class="legend-item"><span class="legend-dot day1"></span> Day1 抵达</div>
+                <div class="legend-item"><span class="legend-dot day2"></span> Day2 海滩</div>
+                <div class="legend-item"><span class="legend-dot day3"></span> Day3 追星</div>
+                <div class="legend-item"><span class="legend-dot hotel"></span> 酒店位置</div>
+            </div>
+            
+            <h3 style="margin-top: 25px; margin-bottom: 15px;">📍 4天路线总览</h3>
+            <div class="map-container">
+                <div id="route-map"></div>
+            </div>
+        </div>
+        
+        <div id="kinn" class="tab-content">
+            <h2 class="section-title">💕 KinnPorsche 追星打卡地</h2>
+            <p style="color: #666; margin-bottom: 20px;">作为《KinnPorsche》的狂热粉丝，这些取景地一定不能错过！</p>
+            
+            <div class="spots-grid">
+                <div class="spot-card">
+                    <div class="spot-img">🏘️</div>
+                    <div class="spot-info">
+                        <h4>普吉镇老街</h4>
+                        <p>色彩缤纷的中葡建筑，剧中多个场景取景地。漫步其中仿佛穿越到戏里</p>
+                        <span class="spot-tag">必打卡</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <div class="spot-img">☕</div>
+                    <div class="spot-info">
+                        <h4>Rangsit Coffee</h4>
+                        <p>剧组常去的咖啡店，剧中多次出现。点一杯泰式冰咖啡，get同款剧照</p>
+                        <span class="spot-tag">咖啡时光</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <div class="spot-img">🏖️</div>
+                    <div class="spot-info">
+                        <h4>芭东海滩</h4>
+                        <p>第一季第3集取景地，傍晚日落时分拍照超级浪漫，出片率100%</p>
+                        <span class="spot-tag">日落绝了</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <div class="spot-img">🌅</div>
+                    <div class="spot-info">
+                        <h4>卡伦观景台</h4>
+                        <p>俯瞰三大海滩全景，剧中航拍镜头取景地，风景超震撼</p>
+                        <span class="spot-tag">风景绝佳</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <div class="spot-img">🌿</div>
+                    <div class="spot-info">
+                        <h4>普吉蓝峡谷餐厅</h4>
+                        <p>剧中出现的高级餐厅，环境优美，适合情侣约会+打卡</p>
+                        <span class="spot-tag">约会推荐</span>
+                    </div>
+                </div>
+                
+                <div class="spot-card">
+                    <div class="spot-img">🎭</div>
+                    <div class="spot-info">
+                        <h4>周日步行街</h4>
+                        <p>每周日晚上开放的步行街夜市，如果行程刚好周日一定要去！</p>
+                        <span class="spot-tag">夜市文化</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tips-card" style="margin-top: 25px;">
+                <h3 style="margin-bottom: 15px;">📸 拍照小技巧</h3>
+                <div class="tip-item">
+                    <div class="tip-icon">🌅</div>
+                    <div class="tip-content">
+                        <h4>黄金时间</h4>
+                        <p>日出后1小时或日落前1小时是拍照最佳时间，光线最柔和</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">👗</div>
+                    <div class="tip-content">
+                        <h4>穿搭建议</h4>
+                        <p>建议穿浅色或亮色衣服，在彩色建筑前更出片；备一套泰式风格的裙子</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">📱</div>
+                    <div class="tip-content">
+                        <h4>拍照姿势</h4>
+                        <p>可以假装在看远处、靠在墙边、或者拿着咖啡/食物摆拍，更自然</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="budget" class="tab-content">
+            <div class="budget-section">
+                <div class="budget-header">
+                    <div>
+                        <h3>💰 预算总览</h3>
+                        <p style="color: #888; font-size: 0.9rem;">*已包含机票</p>
+                    </div>
+                    <div class="budget-total">
+                        <div class="label">总预算</div>
+                        <div class="amount">¥9,950</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="budget-section">
+                <h3 style="margin-bottom: 15px;">📋 详细预算</h3>
+                
+                <div class="budget-item">
+                    <div><span class="icon">🏨</span><span class="name">酒店 (4晚)</span></div>
+                    <div class="cost">¥3,850</div>
+                </div>
+                <div class="budget-item">
+                    <div><span class="icon">🍜</span><span class="name">餐饮 (4天)</span></div>
+                    <div class="cost">¥1,800</div>
+                </div>
+                <div class="budget-item">
+                    <div><span class="icon">🚗</span><span class="name">交通 (接机+日常)</span></div>
+                    <div class="cost">¥600</div>
+                </div>
+                <div class="budget-item">
+                    <div><span class="icon">💆</span><span class="name">SPA按摩</span></div>
+                    <div class="cost">¥600</div>
+                </div>
+                <div class="budget-item">
+                    <div><span class="icon">🎫</span><span class="name">活动体验</span></div>
+                    <div class="cost">¥500</div>
+                </div>
+                <div class="budget-item">
+                    <div><span class="icon">🛍️</span><span class="name">购物伴手礼</span></div>
+                    <div class="cost">¥800</div>
+                </div>
+                <div class="budget-item">
+                    <div><span class="icon">📱</span><span class="name">通讯/WIFI</span></div>
+                    <div class="cost">¥100</div>
+                </div>
+                <div class="budget-item">
+                    <div><span class="icon">☂️</span><span class="name">应急备用</span></div>
+                    <div class="cost">¥700</div>
+                </div>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapse(this)">
+                <div class="collapsible-header">
+                    <span>🍜 每日餐饮预算参考</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <p><strong>早餐：</strong>酒店含早 或 路边摊 ¥15-30/人</p>
+                        <p><strong>午餐：</strong>普通餐厅 ¥80-150/人</p>
+                        <p><strong>下午茶：</strong>咖啡+甜点 ¥60-100/人</p>
+                        <p><strong>晚餐：</strong>好一点的餐厅 ¥150-300/人</p>
+                        <p style="margin-top: 10px; color: var(--primary);">💡 小费：不需要强制给小费，但好服务可以给20-50铢</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hotel-card" style="margin-top: 20px;">
+                <h4>🏨 推荐酒店区域</h4>
+                <p>综合考虑出行方便、预算和度假氛围，推荐住在 <strong>芭东或卡图</strong> 区域：</p>
+                <p>• 芭东：热闹方便，夜市近，但相对嘈杂</p>
+                <p>• 卡图：安静度假感强，靠近卡伦卡塔海滩</p>
+                <p style="margin-top: 10px;">参考价格：¥900-1100/晚 的泳池连通房或海景房</p>
+            </div>
+            
+            <div class="hotel-card" style="margin-top: 15px;">
+                <h4>🏨 具体酒店推荐</h4>
+                <p><strong>芭东区域：</strong></p>
+                <p>• <strong>普吉岛芭东巴尔米拉度假酒店</strong> - 步行5分钟到海滩，有泳池和SPA</p>
+                <p>• <strong>普吉岛希尔顿阿卡迪亚度假村</strong> - 豪华度假酒店，设施齐全</p>
+                <p><strong>卡图区域：</strong></p>
+                <p>• <strong>普吉岛卡塔海滩度假村</strong> - 靠近卡塔海滩，环境优美</p>
+                <p>• <strong>普吉岛万豪温泉度假酒店</strong> - 高品质度假体验，适合情侣</p>
+            </div>
+            
+            <div class="collapsible" onclick="toggleCollapse(this)">
+                <div class="collapsible-header">
+                    <span>ℹ️ 信息更新说明</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="collapsible-content">
+                    <div class="collapsible-inner">
+                        <p>本手册中的信息基于以下来源：</p>
+                        <p>• 普吉岛主要旅游景点和区域的基本信息</p>
+                        <p>• KinnPorsche 剧集取景地的公开资料</p>
+                        <p>• 普遍适用的旅游费用参考</p>
+                        <p>• 常规的出行准备和安全提示</p>
+                        <p style="margin-top: 10px; color: var(--primary);">💡 建议出行前通过以下方式获取最新信息：</p>
+                        <p>• 查看酒店官网的实时价格和设施</p>
+                        <p>• 关注泰国旅游局的最新政策</p>
+                        <p>• 使用地图APP确认具体位置和路线</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tips" class="tab-content">
+            <div class="tips-card">
+                <h3 style="margin-bottom: 15px;">🛡️ 出行准备</h3>
+                <div class="tip-item">
+                    <div class="tip-icon">📄</div>
+                    <div class="tip-content">
+                        <h4>证件准备</h4>
+                        <p>护照（有效期6个月以上）、机票行程单、酒店确认单</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">💰</div>
+                    <div class="tip-content">
+                        <h4>现金&支付</h4>
+                        <p>带人民币现金去换泰铢（汇率约1:5），或带银联卡当地ATM取现。部分地方支持支付宝</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">📱</div>
+                    <div class="tip-content">
+                        <h4>通讯</h4>
+                        <p>淘宝买泰国happy卡（7天无限流量约30元），或开通国际漫游</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tips-card">
+                <h3 style="margin-bottom: 15px;">☀️ 热带必备</h3>
+                <div class="tip-item">
+                    <div class="tip-icon">🧴</div>
+                    <div class="tip-content">
+                        <h4>防晒必备</h4>
+                        <p>SPF50+防晒霜、晒后修复、墨镜、遮阳帽。泰国紫外线超强！</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">👗</div>
+                    <div class="tip-content">
+                        <h4>衣物建议</h4>
+                        <p>轻便夏装、泳衣、防晒衫、拖鞋。一套长裙/长裤（进寺庙要穿过膝裤）</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">💊</div>
+                    <div class="tip-content">
+                        <h4>药品</h4>
+                        <p>肠胃药、创可贴、防蚊液、自身常用药</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tips-card">
+                <h3 style="margin-bottom: 15px;">🚗 交通提示</h3>
+                <div class="tip-item">
+                    <div class="tip-icon">🏍️</div>
+                    <div class="tip-content">
+                        <h4>突突车</h4>
+                        <p>普吉岛特色，但记得砍价！短途约100-200铢</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">🚕</div>
+                    <div class="tip-content">
+                        <h4>打车</h4>
+                        <p>推荐用Grab App，和滴滴类似，价格透明</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">🛵</div>
+                    <div class="tip-content">
+                        <h4>租摩托车</h4>
+                        <p>如果你会骑，租摩托很方便（约200-300铢/天），但要注意安全！</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tips-card">
+                <h3 style="margin-bottom: 15px;">💡 实用Tips</h3>
+                <div class="tip-item">
+                    <div class="tip-icon">⏰</div>
+                    <div class="tip-content">
+                        <h4>时差</h4>
+                        <p>泰国比中国慢1小时（北京时间9点 = 泰国时间8点）</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">🔌</div>
+                    <div class="tip-content">
+                        <h4>电压</h4>
+                        <p>泰国电压220V，和中国一样，插头也是两脚扁插</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">🙏</div>
+                    <div class="tip-content">
+                        <h4>礼仪</h4>
+                        <p>尊重当地文化：不要摸别人的头、不要用脚指人。进入寺庙要脱鞋</p>
+                    </div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">☎️</div>
+                    <div class="tip-content">
+                        <h4>紧急电话</h4>
+                        <p>泰国报警电话：191；旅游警察：1155；急救电话：1669</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-bottom">
+        <button class="active" data-tab="itinerary">
+            <span class="icon">📅</span>
+            <span>行程</span>
+        </button>
+        <button data-tab="flights">
+            <span class="icon">✈️</span>
+            <span>机票</span>
+        </button>
+        <button data-tab="map">
+            <span class="icon">🗺️</span>
+            <span>地图</span>
+        </button>
+        <button data-tab="kinn">
+            <span class="icon">💕</span>
+            <span>打卡</span>
+        </button>
+        <button data-tab="budget">
+            <span class="icon">💰</span>
+            <span>预算</span>
+        </button>
+    </div>
+    
+    <footer>
+        <p>用❤️制作的普吉岛旅行手册</p>
+        <p>愿你们拥有最美的端午回忆 <span class="heart">💕</span></p>
+    </footer>
+    
+    <script>
+        const locations = {
+            airport: { lat: 8.1119, lng: 98.3169, title: '普吉国际机场', day: 'D1' },
+            hotel: { lat: 7.8965, lng: 98.2965, title: '推荐酒店区域(芭东/卡图)', day: 'hotel' },
+            patong: { lat: 7.8965, lng: 98.2965, title: '芭东海滩', day: 'day1' },
+            karon: { lat: 7.8500, lng: 98.2800, title: '卡伦海滩', day: 'day2' },
+            kata: { lat: 7.8167, lng: 98.2967, title: '卡塔海滩', day: 'day2' },
+            phuketTown: { lat: 7.8806, lng: 98.3922, title: '普吉镇老街', day: 'day3' },
+            jungceylon: { lat: 7.8947, lng: 98.2975, title: '江西冷购物中心', day: 'day3' },
+            viewpoint: { lat: 7.8350, lng: 98.3050, title: '卡伦观景台', day: 'day2' },
+        };
+        
+        const dayColors = {
+            'D1': '#FF6B9D',
+            'day1': '#FF6B9D',
+            'day2': '#FFC937',
+            'day3': '#00B4D8',
+            'hotel': '#6c5ce7'
+        };
+        
+        const map = L.map('map').setView([7.88, 98.35], 11);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+        
+        try {
+            Object.values(locations).forEach(loc => {
+                const color = dayColors[loc.day] || '#FF6B9D';
+                const marker = L.circleMarker([loc.lat, loc.lng], {
+                    radius: 12,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 3,
+                    fillOpacity: 0.9
+                }).addTo(map);
+                marker.bindPopup(`<strong>${loc.title}</strong><br>${loc.day === 'hotel' ? '🏨 酒店' : loc.day.toUpperCase()}`);
+            });
+            
+            const bounds = L.latLngBounds(Object.values(locations).map(l => [l.lat, l.lng]));
+            map.fitBounds(bounds, { padding: [30, 30] });
+        } catch (e) {
+            console.log('Map initialization error:', e);
+        }
+        
+        const routeMap = L.map('route-map').setView([7.88, 98.35], 11);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(routeMap);
+        
+        try {
+            const day1Route = [
+                [locations.airport.lat, locations.airport.lng],
+                [locations.patong.lat, locations.patong.lng]
+            ];
+            const day2Route = [
+                [locations.patong.lat, locations.patong.lng],
+                [locations.karon.lat, locations.karon.lng],
+                [locations.viewpoint.lat, locations.viewpoint.lng],
+                [locations.kata.lat, locations.kata.lng]
+            ];
+            const day3Route = [
+                [locations.kata.lat, locations.kata.lng],
+                [locations.phuketTown.lat, locations.phuketTown.lng],
+                [locations.jungceylon.lat, locations.jungceylon.lng],
+                [locations.patong.lat, locations.patong.lng]
+            ];
+            
+            L.polyline(day1Route, { color: '#FF6B9D', weight: 4, opacity: 0.8 }).addTo(routeMap);
+            L.polyline(day2Route, { color: '#FFC937', weight: 4, opacity: 0.8 }).addTo(routeMap);
+            L.polyline(day3Route, { color: '#00B4D8', weight: 4, opacity: 0.8 }).addTo(routeMap);
+            
+            const dayLabels = ['Day1 抵达', 'Day2 海滩', 'Day3 追星'];
+            const dayColorsArr = ['#FF6B9D', '#FFC937', '#00B4D8'];
+            
+            Object.values(locations).forEach((loc, i) => {
+                const color = dayColors[loc.day] || '#6c5ce7';
+                L.circleMarker([loc.lat, loc.lng], {
+                    radius: 10,
+                    fillColor: color,
+                    color: '#fff',
+                    weight: 3,
+                    fillOpacity: 0.9
+                }).addTo(routeMap);
+            });
+            
+            routeMap.fitBounds(bounds, { padding: [30, 30] });
+        } catch (e) {
+            console.log('Route map initialization error:', e);
+        }
+        
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                const tabId = this.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        document.querySelectorAll('.nav-bottom button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.nav-bottom button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                const tabId = this.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+                document.querySelector(`.tab-btn[data-tab="${tabId}"]`)?.classList.add('active');
+            });
+        });
+        
+        function toggleCollapse(el) {
+            el.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
