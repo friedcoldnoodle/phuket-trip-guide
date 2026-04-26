@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>普吉岛端午之旅 💕</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
         
@@ -569,6 +567,29 @@
         .legend-dot.day3 { background: #00B4D8; }
         .legend-dot.hotel { background: #6c5ce7; }
         
+        .map-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(196, 69, 105, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .map-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(196, 69, 105, 0.4);
+        }
+        
+        .map-link:active {
+            transform: translateY(0);
+        }
+        
         .collapsible {
             background: white;
             border-radius: 15px;
@@ -651,31 +672,25 @@
                 <div class="day-header">
                     <div class="day-number">D1</div>
                     <div class="day-info">
-                        <h3>抵达日 · 放松适应</h3>
-                        <span class="theme">🌴 抵达 + 酒店休息 + 芭东夜市</span>
+                        <h3>6月18日 抵达日</h3>
+                        <span class="theme">� 机场 → 酒店入住 → 芭东夜市</span>
                     </div>
                 </div>
                 <div class="timeline">
                     <div class="timeline-item">
-                        <div class="time">14:00 - 15:30</div>
+                        <div class="time">22:45</div>
                         <div class="activity">✈️ 抵达普吉岛</div>
-                        <div class="activity-desc">专车接机，直奔酒店。路上看看窗外的热带风光，慢慢进入度假模式～</div>
+                        <div class="activity-desc">乘坐 MU8617 航班抵达普吉国际机场，办理入境手续</div>
                     </div>
                     <div class="timeline-item">
-                        <div class="time">15:30 - 18:00</div>
-                        <div class="activity">🏨 入住 & 休息</div>
-                        <div class="activity-desc">办理入住，在酒店稍作休息，泡泡泳池，适应一下热带气候</div>
+                        <div class="time">23:30 - 00:30</div>
+                        <div class="activity">🚗 前往酒店</div>
+                        <div class="activity-desc">机场到芭东约 45 分钟车程，办理入住手续</div>
                     </div>
                     <div class="timeline-item">
-                        <div class="time">18:30 - 21:00</div>
-                        <div class="activity">🌙 芭东海滩 & 夜市</div>
-                        <div class="activity-desc">漫步芭东海滩，看日落！之后去夜市逛吃：泰式烤鱼、芒果糯米饭、椰子冰淇淋...</div>
-                    </div>
-                </div>
-                <div class="kinn-spot">
-                    <div class="kinn-spot-title">💕 KinnPorsche打卡</div>
-                    <div class="kinn-spot-content">
-                        <strong>芭东海滩</strong> - 第一季第3集场景之一，傍晚的海滩日落超级美，可以拍同款浪漫照片！
+                        <div class="time">00:30 后</div>
+                        <div class="activity">🌙 休息</div>
+                        <div class="activity-desc">长途飞行后好好休息，为第二天的行程做准备</div>
                     </div>
                 </div>
             </div>
@@ -684,36 +699,35 @@
                 <div class="day-header">
                     <div class="day-number">D2</div>
                     <div class="day-info">
-                        <h3>浪漫日 · 海滩时光</h3>
-                        <span class="theme">💑 卡伦海滩 + 下午茶 + SPA</span>
+                        <h3>6月19日 海滩日</h3>
+                        <span class="theme">🏖️ 卡伦海滩 + 卡塔海滩 + 悬崖餐厅</span>
                     </div>
                 </div>
                 <div class="timeline">
                     <div class="timeline-item">
                         <div class="time">09:00 - 12:00</div>
                         <div class="activity">🏖️ 卡伦海滩</div>
-                        <div class="activity-desc">普吉岛最长的海滩，沙质细腻柔软。人相对芭东少很多，可以安静享受二人世界</div>
+                        <div class="activity-desc">普吉岛最长的海滩，沙质细腻柔软。可以在海滩上漫步、拍照，享受阳光</div>
                     </div>
                     <div class="timeline-item">
-                        <div class="time">12:30 - 14:00</div>
-                        <div class="activity">☕ 悬崖餐厅午餐</div>
-                        <div class="activity-desc">在卡伦海滩附近的悬崖餐厅用餐，俯瞰整片安达曼海，拍照超级出片！</div>
+                        <div class="time">12:30 - 14:30</div>
+                        <div class="activity">🍽️ 悬崖餐厅午餐</div>
+                        <div class="activity-desc">在卡伦海滩附近的悬崖餐厅用餐，俯瞰整片安达曼海，景色绝佳</div>
                     </div>
                     <div class="timeline-item">
-                        <div class="time">14:30 - 17:00</div>
-                        <div class="activity">💆 泰式SPA</div>
-                        <div class="activity-desc">选一家口碑好的泰式按摩店，做个精油SPA放松身心（推荐： Let's Relax Spa）</div>
+                        <div class="time">15:00 - 18:00</div>
+                        <div class="activity">🏖️ 卡塔海滩</div>
+                        <div class="activity-desc">卡塔海滩比卡伦更安静，适合悠闲地享受海滩时光，可以尝试一些水上活动</div>
                     </div>
                     <div class="timeline-item">
-                        <div class="time">18:00 - 20:00</div>
-                        <div class="activity">🌅 卡塔海滩日落</div>
-                        <div class="activity-desc">去卡塔海滩看绝美日落，然后回酒店附近吃晚餐</div>
+                        <div class="time">18:30 - 20:30</div>
+                        <div class="activity">🌅 卡塔观景台</div>
+                        <div class="activity-desc">观看日落，这里可以看到卡塔和卡伦海滩的全景，拍照超级出片</div>
                     </div>
-                </div>
-                <div class="kinn-spot">
-                    <div class="kinn-spot-title">💕 KinnPorsche打卡</div>
-                    <div class="kinn-spot-content">
-                        <strong>卡伦观景台</strong> - 这里可以看到卡伦、卡塔、芭东三大海滩的全景，也是剧粉必打卡的地方之一
+                    <div class="timeline-item">
+                        <div class="time">21:00 - 22:30</div>
+                        <div class="activity">🍜 芭东夜市</div>
+                        <div class="activity-desc">逛芭东夜市，品尝当地美食：泰式烤鱼、芒果糯米饭、椰子冰淇淋</div>
                     </div>
                 </div>
             </div>
@@ -722,38 +736,35 @@
                 <div class="day-header">
                     <div class="day-number">D3</div>
                     <div class="day-info">
-                        <h3>追星日 · 取景地巡礼</h3>
-                        <span class="theme">🎬 KinnPorsche取景地深度游</span>
+                        <h3>6月20日 文化日</h3>
+                        <span class="theme">� 普吉镇 + 查龙寺 + 山顶大佛</span>
                     </div>
                 </div>
                 <div class="timeline">
                     <div class="timeline-item">
-                        <div class="time">10:00 - 12:00</div>
-                        <div class="activity">📍 普吉镇老街</div>
-                        <div class="activity-desc">色彩斑斓的中葡建筑街道，漫步其中超有氛围感。剧中很多场景都在这里取景！</div>
+                        <div class="time">09:00 - 12:00</div>
+                        <div class="activity">🏯 普吉镇</div>
+                        <div class="activity-desc">游览普吉镇老街，欣赏中葡混合风格的建筑，感受当地文化</div>
                     </div>
                     <div class="timeline-item">
                         <div class="time">12:30 - 14:00</div>
-                        <div class="activity">☕ Rangsit Coffee</div>
-                        <div class="activity-desc">追星人必去的咖啡店！据说剧组常在这里取景，品尝泰式咖啡，假装在拍戏～</div>
+                        <div class="activity">🍽️ 普吉镇午餐</div>
+                        <div class="activity-desc">在普吉镇品尝当地特色美食，推荐尝试泰南菜</div>
                     </div>
                     <div class="timeline-item">
-                        <div class="time">15:00 - 17:30</div>
-                        <div class="activity">🛍️ 江西冷购物中心</div>
-                        <div class="activity-desc">吹着空调逛街，帮你女朋友买买防晒和纪念品。BigC超市可以采购泰国零食</div>
+                        <div class="time">14:30 - 16:00</div>
+                        <div class="activity">🙏 查龙寺</div>
+                        <div class="activity-desc">参观普吉岛最大的佛教寺庙，了解泰国佛教文化</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">16:30 - 18:30</div>
+                        <div class="activity">� 山顶大佛</div>
+                        <div class="activity-desc">登上山顶欣赏普吉岛全景，参观巨大的佛像</div>
                     </div>
                     <div class="timeline-item">
                         <div class="time">19:00 - 21:00</div>
-                        <div class="activity">🌃 芭东酒吧街夜景</div>
-                        <div class="activity-desc">感受普吉岛的夜生活，但不进去酒吧哦～在外面拍拍照，感受热闹氛围</div>
-                    </div>
-                </div>
-                <div class="kinn-spot">
-                    <div class="kinn-spot-title">💕 KinnPorsche取景地重点标记</div>
-                    <div class="kinn-spot-content">
-                        <strong>普吉镇</strong> - 必去！老街的中葡建筑、五颜六色的房子，每一处都是拍照圣地<br>
-                        <strong>周日步行街</strong> - 如果碰上周日，晚上有步行街夜市，超热闹！<br>
-                        <strong>普吉蓝峡谷餐厅</strong> - 剧中出现过的餐厅，可以去打卡！
+                        <div class="activity">💆 泰式SPA</div>
+                        <div class="activity-desc">享受正宗的泰式按摩，放松身心（推荐：Let's Relax Spa）</div>
                     </div>
                 </div>
             </div>
@@ -762,30 +773,62 @@
                 <div class="day-header">
                     <div class="day-number">D4</div>
                     <div class="day-info">
-                        <h3>悠闲日 · 自由活动</h3>
-                        <span class="theme">🛶 享受慢生活 + 准备返程</span>
+                        <h3>6月21日 休闲日</h3>
+                        <span class="theme">🛍️ 购物 + 酒店休闲 + 特色晚餐</span>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">09:30 - 12:30</div>
+                        <div class="activity">�️ 江西冷购物中心</div>
+                        <div class="activity-desc">购物、逛超市，购买伴手礼和特产</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">13:00 - 16:30</div>
+                        <div class="activity">🏊 酒店休闲</div>
+                        <div class="activity-desc">在酒店泳池放松，享受悠闲的度假时光</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">17:00 - 19:00</div>
+                        <div class="activity">🌅 芭东海滩日落</div>
+                        <div class="activity-desc">在芭东海滩看日落，拍照留念</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">19:30 - 21:30</div>
+                        <div class="activity">🍽️ 特色晚餐</div>
+                        <div class="activity-desc">在海边餐厅享用最后一顿泰式晚餐，品尝正宗的冬阴功汤</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">D5</div>
+                    <div class="day-info">
+                        <h3>6月22日 返程日</h3>
+                        <span class="theme">🧳 退房 + 机场</span>
                     </div>
                 </div>
                 <div class="timeline">
                     <div class="timeline-item">
                         <div class="time">09:00 - 11:00</div>
-                        <div class="activity">🏊 酒店享受</div>
-                        <div class="activity-desc">睡到自然醒，在酒店泳池畔悠闲度过一上午，喝杯冰饮，看本好书</div>
+                        <div class="activity">🧳 退房</div>
+                        <div class="activity-desc">整理行李，办理退房手续</div>
                     </div>
                     <div class="timeline-item">
-                        <div class="time">12:00 - 14:00</div>
-                        <div class="activity">🍜 最后的泰餐</div>
-                        <div class="activity-desc">去品尝一餐正宗的泰南菜：冬阴功汤、绿咖喱、泰式炒河粉...给味蕾留下美好记忆</div>
+                        <div class="time">11:30 - 14:00</div>
+                        <div class="activity">�️ 最后午餐</div>
+                        <div class="activity-desc">在附近餐厅享用最后一顿午餐</div>
                     </div>
                     <div class="timeline-item">
                         <div class="time">14:30 - 16:00</div>
-                        <div class="activity">🛍️ 伴手礼采购</div>
-                        <div class="activity-desc">Kingpower免税店逛逛，给家人朋友带点特产：泰国香米、榴莲干、青草膏...</div>
+                        <div class="activity">� 前往机场</div>
+                        <div class="activity-desc">提前3小时到达机场，办理登机手续</div>
                     </div>
                     <div class="timeline-item">
-                        <div class="time">18:00</div>
+                        <div class="time">23:35</div>
                         <div class="activity">✈️ 返程</div>
-                        <div class="activity-desc">专车送机，带着满满的美好回忆回家～下次见，普吉岛！</div>
+                        <div class="activity-desc">乘坐 9C8522 航班返回上海，结束美好的普吉岛之旅</div>
                     </div>
                 </div>
             </div>
@@ -895,21 +938,190 @@
         </div>
         
         <div id="map" class="tab-content">
-            <h2 class="section-title">🗺️ 行程互动地图</h2>
-            <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">点击标记查看详细位置和介绍</p>
-            <div class="map-container">
-                <div id="map"></div>
-            </div>
-            <div class="legend">
-                <div class="legend-item"><span class="legend-dot day1"></span> Day1 抵达</div>
-                <div class="legend-item"><span class="legend-dot day2"></span> Day2 海滩</div>
-                <div class="legend-item"><span class="legend-dot day3"></span> Day3 追星</div>
-                <div class="legend-item"><span class="legend-dot hotel"></span> 酒店位置</div>
+            <h2 class="section-title">🗺️ 行程地图</h2>
+            <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">点击"打开Google地图"跳转查看详细路线和导航</p>
+            
+            <div class="day-card">
+                <h3 style="margin-bottom: 15px; color: #2d3436;">📍 Day1 抵达日路线</h3>
+                <!-- 路线图片 -->
+                <div style="margin-bottom: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 200px; background: linear-gradient(135deg, #FF6B9D 0%, #C44569 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; text-align: center;">
+                    🗺️ Day1 路线图<br>机场 → 芭东酒店
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #FF6B9D; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</span>
+                        <div>
+                            <strong style="color: #2d3436;">普吉国际机场</strong>
+                            <span style="color: #888; font-size: 0.85rem;"> 7.8809°N, 98.3922°E</span>
+                        </div>
+                    </div>
+                    <div style="border-left: 2px dashed #FF6B9D; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #6c5ce7; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">🏨</span>
+                        <div>
+                            <strong style="color: #2d3436;">芭东海滩区域（酒店）</strong>
+                            <span style="color: #888; font-size: 0.85rem;"> 7.8965°N, 98.2965°E</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 交通建议 -->
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-top: 15px;">
+                    <h4 style="margin-bottom: 10px; color: #2d3436;">🚗 交通建议</h4>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>接机服务</strong>：提前预订接机服务，约 ¥200/次，直接送到酒店</p>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>出租车</strong>：机场到芭东约 400-600 泰铢，记得砍价</p>
+                    <p style="font-size: 0.95rem; color: #666;">• <strong>时间</strong>：机场到芭东约 45 分钟车程</p>
+                </div>
+                
+                <a href="https://www.google.com/maps/place/普吉国际机场/@7.8809,98.3922,15z" target="_blank" class="map-link">📍 打开Google地图 - 机场</a>
             </div>
             
-            <h3 style="margin-top: 25px; margin-bottom: 15px;">📍 4天路线总览</h3>
-            <div class="map-container">
-                <div id="route-map"></div>
+            <div class="day-card">
+                <h3 style="margin-bottom: 15px; color: #2d3436;">📍 Day2 海滩日路线</h3>
+                <!-- 路线图片 -->
+                <div style="margin-bottom: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 200px; background: linear-gradient(135deg, #FFC937 0%, #F9A826 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; text-align: center;">
+                    🗺️ Day2 路线图<br>芭东 → 卡伦海滩 → 卡塔海滩
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #FFC937; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</span>
+                        <div><strong style="color: #2d3436;">芭东</strong> → <span style="color: #888; font-size: 0.85rem;">酒店出发</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #FFC937; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #FFC937; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">2</span>
+                        <div><strong style="color: #2d3436;">卡伦海滩</strong><span style="color: #888; font-size: 0.85rem;"> 7.8500°N, 98.2800°E</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #FFC937; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #FFC937; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">3</span>
+                        <div><strong style="color: #2d3436;">卡伦观景台</strong><span style="color: #888; font-size: 0.85rem;"> 7.8350°N, 98.3050°E</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #FFC937; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #FFC937; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">4</span>
+                        <div><strong style="color: #2d3436;">卡塔海滩</strong><span style="color: #888; font-size: 0.85rem;"> 7.8167°N, 98.2967°E</span></div>
+                    </div>
+                </div>
+                
+                <!-- 交通建议 -->
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-top: 15px;">
+                    <h4 style="margin-bottom: 10px; color: #2d3436;">🚗 交通建议</h4>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>包车</strong>：全天包车约 1500-2000 泰铢，方便景点间移动</p>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>Grab打车</strong>：芭东到卡伦约 200 泰铢，卡伦到卡塔约 150 泰铢</p>
+                    <p style="font-size: 0.95rem; color: #666;">• <strong>时间</strong>：芭东到卡塔约 30 分钟车程</p>
+                </div>
+                
+                <a href="https://www.google.com/maps/place/卡伦海滩/@7.8500,98.2800,15z" target="_blank" class="map-link">📍 打开Google地图 - 卡伦海滩</a>
+            </div>
+            
+            <div class="day-card">
+                <h3 style="margin-bottom: 15px; color: #2d3436;">📍 Day3 文化日路线</h3>
+                <!-- 路线图片 -->
+                <div style="margin-bottom: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 200px; background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; text-align: center;">
+                    🗺️ Day3 路线图<br>芭东 → 普吉镇 → 查龙寺 → 山顶大佛
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #00B4D8; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</span>
+                        <div><strong style="color: #2d3436;">芭东</strong> → <span style="color: #888; font-size: 0.85rem;">酒店出发</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #00B4D8; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #00B4D8; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">2</span>
+                        <div><strong style="color: #2d3436;">普吉镇</strong><span style="color: #888; font-size: 0.85rem;"> 7.8806°N, 98.3922°E</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #00B4D8; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #00B4D8; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">3</span>
+                        <div><strong style="color: #2d3436;">查龙寺</strong><span style="color: #888; font-size: 0.85rem;"> 7.8568°N, 98.3137°E</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #00B4D8; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #00B4D8; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">4</span>
+                        <div><strong style="color: #2d3436;">山顶大佛</strong><span style="color: #888; font-size: 0.85rem;"> 7.8422°N, 98.3556°E</span></div>
+                    </div>
+                </div>
+                
+                <!-- 交通建议 -->
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-top: 15px;">
+                    <h4 style="margin-bottom: 10px; color: #2d3436;">🚗 交通建议</h4>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>包车</strong>：全天包车约 1500-2000 泰铢，适合一天内游览多个景点</p>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>Grab打车</strong>：芭东到普吉镇约 250 泰铢，普吉镇到查龙寺约 150 泰铢</p>
+                    <p style="font-size: 0.95rem; color: #666;">• <strong>时间</strong>：芭东到山顶大佛约 45 分钟车程</p>
+                </div>
+                
+                <a href="https://www.google.com/maps/place/普吉镇/@7.8806,98.3922,15z" target="_blank" class="map-link">📍 打开Google地图 - 普吉镇</a>
+            </div>
+            
+            <div class="day-card">
+                <h3 style="margin-bottom: 15px; color: #2d3436;">📍 Day4 休闲日路线</h3>
+                <!-- 路线图片 -->
+                <div style="margin-bottom: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 200px; background: linear-gradient(135deg, #9C27B0 0%, #6A1B9A 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; text-align: center;">
+                    🗺️ Day4 路线图<br>芭东 → 江西冷 → 芭东海滩
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #9C27B0; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</span>
+                        <div><strong style="color: #2d3436;">芭东</strong> → <span style="color: #888; font-size: 0.85rem;">酒店出发</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #9C27B0; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #9C27B0; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">2</span>
+                        <div><strong style="color: #2d3436;">江西冷购物中心</strong><span style="color: #888; font-size: 0.85rem;"> 7.8947°N, 98.2975°E</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #9C27B0; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #9C27B0; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">3</span>
+                        <div><strong style="color: #2d3436;">芭东海滩</strong><span style="color: #888; font-size: 0.85rem;"> 7.8965°N, 98.2965°E</span></div>
+                    </div>
+                </div>
+                
+                <!-- 交通建议 -->
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-top: 15px;">
+                    <h4 style="margin-bottom: 10px; color: #2d3436;">🚗 交通建议</h4>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>步行</strong>：如果酒店在芭东中心，到江西冷和海滩都可以步行</p>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>突突车</strong>：短途出行约 100-200 泰铢</p>
+                    <p style="font-size: 0.95rem; color: #666;">• <strong>时间</strong>：芭东中心区域内移动都在 10-15 分钟内</p>
+                </div>
+                
+                <a href="https://www.google.com/maps/place/江西冷购物中心/@7.8947,98.2975,15z" target="_blank" class="map-link">📍 打开Google地图 - 江西冷</a>
+            </div>
+            
+            <div class="day-card">
+                <h3 style="margin-bottom: 15px; color: #2d3436;">📍 Day5 返程日路线</h3>
+                <!-- 路线图片 -->
+                <div style="margin-bottom: 20px; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 200px; background: linear-gradient(135deg, #607D8B 0%, #455A64 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; text-align: center;">
+                    🗺️ Day5 路线图<br>芭东 → 机场
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #888; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</span>
+                        <div><strong style="color: #2d3436;">芭东</strong> → <span style="color: #888; font-size: 0.85rem;">酒店退房</span></div>
+                    </div>
+                    <div style="border-left: 2px dashed #888; height: 20px; margin-left: 11px;"></div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="background: #888; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✈️</span>
+                        <div><strong style="color: #2d3436;">普吉国际机场</strong><span style="color: #888; font-size: 0.85rem;"> 8.1119°N, 98.3169°E</span></div>
+                    </div>
+                </div>
+                
+                <!-- 交通建议 -->
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-top: 15px;">
+                    <h4 style="margin-bottom: 10px; color: #2d3436;">🚗 交通建议</h4>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>送机服务</strong>：提前预订送机服务，约 ¥200/次</p>
+                    <p style="font-size: 0.95rem; color: #666; margin-bottom: 5px;">• <strong>出租车</strong>：芭东到机场约 400-600 泰铢</p>
+                    <p style="font-size: 0.95rem; color: #666;">• <strong>时间</strong>：芭东到机场约 45 分钟车程，建议提前3小时出发</p>
+                </div>
+                
+                <a href="https://www.google.com/maps/place/普吉国际机场/@8.1119,98.3169,15z" target="_blank" class="map-link">📍 打开Google地图 - 机场</a>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #E8F6FA 0%, #F0F8FF 100%); border-radius: 15px; padding: 20px; margin-top: 20px;">
+                <h3 style="margin-bottom: 10px; color: #2d3436;">💡 使用提示</h3>
+                <p style="font-size: 0.95rem; color: #666;">• 点击各路线的"打开Google地图"按钮，跳转到Google地图应用查看详细位置</p>
+                <p style="font-size: 0.95rem; color: #666;">• 也可以复制坐标到其他地图应用</p>
+                <p style="font-size: 0.95rem; color: #666;">• 在Google地图中搜索目的地，获取驾车/公交路线</p>
             </div>
         </div>
         
@@ -1244,99 +1456,6 @@
     </footer>
     
     <script>
-        const locations = {
-            airport: { lat: 8.1119, lng: 98.3169, title: '普吉国际机场', day: 'D1' },
-            hotel: { lat: 7.8965, lng: 98.2965, title: '推荐酒店区域(芭东/卡图)', day: 'hotel' },
-            patong: { lat: 7.8965, lng: 98.2965, title: '芭东海滩', day: 'day1' },
-            karon: { lat: 7.8500, lng: 98.2800, title: '卡伦海滩', day: 'day2' },
-            kata: { lat: 7.8167, lng: 98.2967, title: '卡塔海滩', day: 'day2' },
-            phuketTown: { lat: 7.8806, lng: 98.3922, title: '普吉镇老街', day: 'day3' },
-            jungceylon: { lat: 7.8947, lng: 98.2975, title: '江西冷购物中心', day: 'day3' },
-            viewpoint: { lat: 7.8350, lng: 98.3050, title: '卡伦观景台', day: 'day2' },
-        };
-        
-        const dayColors = {
-            'D1': '#FF6B9D',
-            'day1': '#FF6B9D',
-            'day2': '#FFC937',
-            'day3': '#00B4D8',
-            'hotel': '#6c5ce7'
-        };
-        
-        const map = L.map('map').setView([7.88, 98.35], 11);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 19
-        }).addTo(map);
-        
-        try {
-            Object.values(locations).forEach(loc => {
-                const color = dayColors[loc.day] || '#FF6B9D';
-                const marker = L.circleMarker([loc.lat, loc.lng], {
-                    radius: 12,
-                    fillColor: color,
-                    color: '#fff',
-                    weight: 3,
-                    fillOpacity: 0.9
-                }).addTo(map);
-                marker.bindPopup(`<strong>${loc.title}</strong><br>${loc.day === 'hotel' ? '🏨 酒店' : loc.day.toUpperCase()}`);
-            });
-            
-            const bounds = L.latLngBounds(Object.values(locations).map(l => [l.lat, l.lng]));
-            map.fitBounds(bounds, { padding: [30, 30] });
-        } catch (e) {
-            console.log('Map initialization error:', e);
-        }
-        
-        const routeMap = L.map('route-map').setView([7.88, 98.35], 11);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 19
-        }).addTo(routeMap);
-        
-        try {
-            const day1Route = [
-                [locations.airport.lat, locations.airport.lng],
-                [locations.patong.lat, locations.patong.lng]
-            ];
-            const day2Route = [
-                [locations.patong.lat, locations.patong.lng],
-                [locations.karon.lat, locations.karon.lng],
-                [locations.viewpoint.lat, locations.viewpoint.lng],
-                [locations.kata.lat, locations.kata.lng]
-            ];
-            const day3Route = [
-                [locations.kata.lat, locations.kata.lng],
-                [locations.phuketTown.lat, locations.phuketTown.lng],
-                [locations.jungceylon.lat, locations.jungceylon.lng],
-                [locations.patong.lat, locations.patong.lng]
-            ];
-            
-            L.polyline(day1Route, { color: '#FF6B9D', weight: 4, opacity: 0.8 }).addTo(routeMap);
-            L.polyline(day2Route, { color: '#FFC937', weight: 4, opacity: 0.8 }).addTo(routeMap);
-            L.polyline(day3Route, { color: '#00B4D8', weight: 4, opacity: 0.8 }).addTo(routeMap);
-            
-            const dayLabels = ['Day1 抵达', 'Day2 海滩', 'Day3 追星'];
-            const dayColorsArr = ['#FF6B9D', '#FFC937', '#00B4D8'];
-            
-            Object.values(locations).forEach((loc, i) => {
-                const color = dayColors[loc.day] || '#6c5ce7';
-                L.circleMarker([loc.lat, loc.lng], {
-                    radius: 10,
-                    fillColor: color,
-                    color: '#fff',
-                    weight: 3,
-                    fillOpacity: 0.9
-                }).addTo(routeMap);
-            });
-            
-            routeMap.fitBounds(bounds, { padding: [30, 30] });
-        } catch (e) {
-            console.log('Route map initialization error:', e);
-        }
-        
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
